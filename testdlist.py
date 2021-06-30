@@ -18,9 +18,9 @@ class TestDLL(unittest.TestCase):
         name = random_name()
         new_node = Node(name)
         dll.append(name)
-        self.assertEqual(dll.head.value, new_node.value)
-        self.assertIsNone(dll.head.next)
-        self.assertIsNone(dll.head.previous)
+        self.assertEqual(dll.head().value, new_node.value)
+        self.assertIsNone(dll.head().next)
+        self.assertIsNone(dll.head().previous)
 
     def test_append_multiple_nodes(self):
         dll = DList()
@@ -31,7 +31,7 @@ class TestDLL(unittest.TestCase):
             test_nodes.append(name)
             dll.push(name)          # synonymous with append
         self.assertEqual(dll.len(), num_nodes)
-        runner = dll.head
+        runner = dll.head()
         for i in range(num_nodes):
             self.assertEqual(runner.value, test_nodes[i])
             if i == 0:
@@ -49,9 +49,9 @@ class TestDLL(unittest.TestCase):
         name = random_name()
         new_node = Node(name)
         dll.prepend(name)
-        self.assertEqual(dll.head.value, new_node.value)
-        self.assertIsNone(dll.head.next)
-        self.assertIsNone(dll.head.previous)
+        self.assertEqual(dll.head().value, new_node.value)
+        self.assertIsNone(dll.head().next)
+        self.assertIsNone(dll.head().previous)
 
 
     def test_prepend_multiple_nodes(self):
@@ -63,7 +63,7 @@ class TestDLL(unittest.TestCase):
             test_nodes.append(name)
             dll.prepend(name)
         self.assertEqual(dll.len(), len(test_nodes))
-        runner = dll.head
+        runner = dll.head()
         # Go backwards through range, as we prepended, so values will be backwards
         for i in range(len(test_nodes)):
             self.assertEqual(runner.value, test_nodes[(len(test_nodes)-1-i)])
@@ -94,7 +94,7 @@ class TestDLL(unittest.TestCase):
             dll.insert_at(insert_name, insert_pos)
             test_nodes.insert(insert_pos, insert_name)
         self.assertEqual(dll.len(), len(test_nodes))
-        runner = dll.head
+        runner = dll.head()
         for i in range(len(test_nodes)):
             self.assertEqual(runner.value, test_nodes[i])
             if i == 0:
@@ -129,7 +129,7 @@ class TestDLL(unittest.TestCase):
             self.assertEqual(dll.len(), len(test_nodes))
         # Now validate that the two lists are the same
         self.assertEqual(dll.len(), len(test_nodes))
-        runner = dll.head
+        runner = dll.head()
         for i in range(len(test_nodes)):
             self.assertEqual(runner.value, test_nodes[i])
             if i == 0:
@@ -159,7 +159,7 @@ class TestDLL(unittest.TestCase):
 
         # Now validate that the two lists are the same
         self.assertEqual(dll.len(), len(test_nodes))
-        runner = dll.head
+        runner = dll.head()
         for i in range(len(test_nodes)):
             self.assertEqual(runner.value, test_nodes[i])
             if i == 0:
@@ -176,7 +176,7 @@ class TestDLL(unittest.TestCase):
     def test_reverse(self):
         dll = DList()
         test_nodes = []
-        num_test_nodes = randint(30, 50)  # Really high number to ensure we have duplicates
+        num_test_nodes = randint(3, 10)
         # Load test nodes
         for i in range(num_test_nodes):
             name = random_name()
@@ -187,7 +187,7 @@ class TestDLL(unittest.TestCase):
         dll.reverse()
         self.assertEqual(dll.len(), len(test_nodes))
         i = len(test_nodes)-1
-        runner = dll.head
+        runner = dll.head()
         while runner is not None:
             if i < 0:
                 print('Error: counter is less than 0')
@@ -196,6 +196,22 @@ class TestDLL(unittest.TestCase):
             i -= 1
 
 
+    # Based on the way the code is written, this should in theory never happen, however to create this
+    #    test, I added in two additional methods: assign_previous_node and assign_next_node
+    #    so that I could create the conditions for this to be true.
+    def test_is_ciruclar_list(self):
+        dll = DList()
+        test_nodes = []
+        num_test_nodes = randint(3, 10)
+        # Load test nodes
+        for i in range(num_test_nodes):
+            name = random_name()
+            dll.append(name)
+            test_nodes.append(name)
+        self.assertEqual(dll.len(), len(test_nodes))
+        self.assertFalse(dll.is_circular_list())
+        # Now set up circular list condition
+        
 
 if __name__ == '__main__':
     unittest.main()

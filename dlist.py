@@ -22,12 +22,13 @@ class Node:
 
 class DList:
     def __init__(self):
-        self.head = None
+        self.listhead = None
+        self.listtail = None
 
 
     def __str__(self):
         rep = '{'
-        runner = self.head
+        runner = self.head()
         while runner is not None:
             rep += f'\n\t{runner}'
             if runner.next is not None:
@@ -37,27 +38,36 @@ class DList:
         return rep
 
 
+    def head(self):
+        return self.listhead
+
+
+    def tail(self):
+        return self.listtail
+
     def prepend(self, value):
         new_node = Node(value)
-        new_node.next = self.head
+        new_node.next = self.head()
         new_node.previous = None
-        if self.head is not None:
-            self.head.previous = new_node
-        self.head = new_node
+        if self.head() is not None:
+            self.head().previous = new_node
+        self.listhead = new_node
+        if self.listtail is None:
+            self.listtail = new_node
         return self
 
 
     def append(self, value):
         new_node = Node(value)
-        runner = self.head
+        runner = self.tail()
         if runner is not None:
-            while runner.next is not None:
-                runner = runner.next
             new_node.previous = runner
             new_node.next = None
             runner.next = new_node
+            self.listtail = new_node
         else:
-            self.head = new_node
+            self.listhead = new_node
+            self.listtail = new_node
         return self
 
 
@@ -75,7 +85,7 @@ class DList:
             self.append(value)
         else:
             new_node = Node(value)
-            runner = self.head
+            runner = self.head()
             node_counter = 0
             while node_counter != pos and runner is not None:
                 node_counter += 1
@@ -92,16 +102,18 @@ class DList:
             print(f'Error: Position {pos} is outside the bounds of the Doubly Linked List.')
             return self
         i = 0
-        runner = self.head
+        runner = self.head()
         while i < pos and runner is not None:
             runner = runner.next
             i += 1
         if runner.previous is not None:
             runner.previous.next = runner.next
         else:
-            self.head = runner.next
+            self.listhead = runner.next
         if runner.next is not None:
             runner.next.previous = runner.previous
+        else:
+            self.listtail = runner.previous
         del runner
         return self
         
@@ -110,7 +122,7 @@ class DList:
         if pos >= self.len():
             print(f'Error: Position {pos} is outside the bounds of the Doubly Linked List.')
             return self
-        runner = self.head
+        runner = self.head()
         counter = 0
         while counter != pos and runner is not None:
             counter += 1
@@ -120,7 +132,7 @@ class DList:
 
     def len(self):
         counter = 0
-        runner = self.head
+        runner = self.head()
         while runner is not None:
             runner = runner.next
             counter += 1
@@ -129,7 +141,7 @@ class DList:
 
     def remove_duplicates(self):
         temp_list = []
-        runner = self.head
+        runner = self.head()
         i = 0
         while runner is not None:
             if runner.value in temp_list:
@@ -155,13 +167,14 @@ class DList:
 
     def reverse(self):
         print()
-        runner = self.head
+        runner = self.head()
+        self.linktail = runner
         # Swap the links around and then go to previous, which used to be next
         while runner is not None:
             print(f'Node before: {runner}')
             runner.previous, runner.next = runner.next, runner.previous
             print(f'Node after: {runner}')
             if runner.previous is None:
-                self.head = runner
+                self.listhead = runner
             runner = runner.previous
         return self
