@@ -216,5 +216,24 @@ class TestDLL(unittest.TestCase):
         print(f'{dll}')
         self.assertTrue(dll.is_circular_list())
 
+
+    def test_middle_node(self):
+        dll = DList()
+        test_nodes = []
+        num_test_nodes = randint(3, 10)
+        # Load test nodes
+        for i in range(num_test_nodes):
+            name = random_name()
+            dll.append(name)
+            test_nodes.append(name)
+        self.assertEqual(dll.len(), len(test_nodes))
+        # find the middle node by using len / 2 then use a runner to get to the correct node.
+        middle_node_1 = len(test_nodes) // 2
+        middle_node_2 = dll.len() // 2
+        self.assertEqual(middle_node_1, middle_node_2)
+        self.assertEqual(dll.value(middle_node_2), test_nodes[middle_node_1])
+
+
+
 if __name__ == '__main__':
     unittest.main()
