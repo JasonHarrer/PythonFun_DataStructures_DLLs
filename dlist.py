@@ -31,9 +31,11 @@ class DList:
         runner = self.head()
         while runner is not None:
             rep += f'\n\t{runner}'
-            if runner.next is not None:
+            if runner != self.tail():
                 rep += ', '
-            runner = runner.next
+                runner = runner.next
+            else:
+                runner = None
         rep += '\n}'
         return rep
 
@@ -153,16 +155,8 @@ class DList:
         return self
 
 
-    def assign_next_node(self, node):
-        pass
-
-
-    def assign_previous_node(self, node):
-        pass
-
-
     def is_circular_list(self):
-        pass
+        return ((self.head().previous == self.tail()) and (self.tail().next == self.head()))
 
 
     def reverse(self):

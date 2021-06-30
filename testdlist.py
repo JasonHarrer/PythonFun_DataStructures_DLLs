@@ -199,7 +199,7 @@ class TestDLL(unittest.TestCase):
     # Based on the way the code is written, this should in theory never happen, however to create this
     #    test, I added in two additional methods: assign_previous_node and assign_next_node
     #    so that I could create the conditions for this to be true.
-    def test_is_ciruclar_list(self):
+    def test_is_circular_list(self):
         dll = DList()
         test_nodes = []
         num_test_nodes = randint(3, 10)
@@ -211,7 +211,10 @@ class TestDLL(unittest.TestCase):
         self.assertEqual(dll.len(), len(test_nodes))
         self.assertFalse(dll.is_circular_list())
         # Now set up circular list condition
-        
+        dll.head().previous = dll.tail()
+        dll.tail().next = dll.head()
+        print(f'{dll}')
+        self.assertTrue(dll.is_circular_list())
 
 if __name__ == '__main__':
     unittest.main()
