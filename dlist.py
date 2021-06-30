@@ -96,18 +96,13 @@ class DList:
         while i < pos and runner is not None:
             runner = runner.next
             i += 1
-        print(f'\ni = {i} of {self.len()-1}, pos = {pos} and runner = {runner}')
-        print(f'\nRemoving Node {runner}')
         if runner.previous is not None:
-            print('runner.previous is not None')
             runner.previous.next = runner.next
         else:
             self.head = runner.next
         if runner.next is not None:
-            print('runner.next is not None')
             runner.next.previous = runner.previous
         del runner
-        print(f'New DList: {self}')
         return self
         
 
@@ -143,6 +138,7 @@ class DList:
                 temp_list.append(runner.value)
                 i += 1
             runner = runner.next
+        return self
 
 
     def assign_next_node(self, node):
