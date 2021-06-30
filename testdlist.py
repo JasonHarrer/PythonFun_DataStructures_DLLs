@@ -173,6 +173,29 @@ class TestDLL(unittest.TestCase):
             runner = runner.next
 
 
+    def test_reverse(self):
+        dll = DList()
+        test_nodes = []
+        num_test_nodes = randint(30, 50)  # Really high number to ensure we have duplicates
+        # Load test nodes
+        for i in range(num_test_nodes):
+            name = random_name()
+            dll.append(name)
+            test_nodes.append(name)
+        self.assertEqual(dll.len(), len(test_nodes))
+        # Now call reverse
+        dll.reverse()
+        self.assertEqual(dll.len(), len(test_nodes))
+        i = len(test_nodes)-1
+        runner = dll.head
+        while runner is not None:
+            if i < 0:
+                print('Error: counter is less than 0')
+            self.assertEqual(test_nodes[i], runner.value)
+            runner = runner.next
+            i -= 1
+
+
 
 if __name__ == '__main__':
     unittest.main()

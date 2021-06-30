@@ -154,4 +154,14 @@ class DList:
 
 
     def reverse(self):
-        pass
+        print()
+        runner = self.head
+        # Swap the links around and then go to previous, which used to be next
+        while runner is not None:
+            print(f'Node before: {runner}')
+            runner.previous, runner.next = runner.next, runner.previous
+            print(f'Node after: {runner}')
+            if runner.previous is None:
+                self.head = runner
+            runner = runner.previous
+        return self
